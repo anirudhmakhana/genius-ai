@@ -17,12 +17,14 @@ import { ChatCompletionRequestMessage } from "openai";
 import { useState } from "react";
 import { Empty } from "@/components/ui/Empty";
 import { cn } from "@/lib/utils";
+import { useProModal } from "@/hooks/useProModal";
 
 // Defining the functional component "page"
 const page = () => {
   // Initializing necessary state and utilities using React hooks
   const router = useRouter();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]); // ["Hello", "How are you?"
+  const proModal = useProModal();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,7 +57,7 @@ const page = () => {
     } catch (error: any) {
       if (error?.response?.status === 403) {
         // If there's a 403 error (Forbidden), handle it in a specific way
-        // proModal.onOpen();
+        proModal.onOpen();
         console.log("403");
       } else {
         // If there's any other error, handle it in a general way
