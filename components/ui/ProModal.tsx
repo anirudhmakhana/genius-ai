@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -15,9 +15,24 @@ import { cn } from "@/lib/utils";
 import { Check, Zap } from "lucide-react";
 import { Butterfly_Kids } from "next/font/google";
 import { Button } from "./button";
+import axios from "axios";
+import { set } from "zod";
 
 const ProModal = () => {
   const proModel = useProModal();
+  const [loading, setLoading] = useState(false);
+
+  const onSubscribe = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("/api/stripe");
+      window.location.href = response.data.url;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Dialog open={proModel.isOpen} onOpenChange={proModel.onClose}>
@@ -47,7 +62,12 @@ const ProModal = () => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button size="lg" variant="premium" className="w-full">
+          <Button
+            size="lg"
+            variant="premium"
+            className="w-full"
+            onClick={onSubscribe}
+          >
             Upgrade
             <Zap className="w-6 h-6 ml-2 fill-white" />
           </Button>

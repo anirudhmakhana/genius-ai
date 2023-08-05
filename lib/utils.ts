@@ -18,3 +18,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(mergedClassNames);
   // Finally, the optimized class names are returned by the "cn" function.
 }
+
+export function absoluteUrl(path: string) {
+  return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
+}
